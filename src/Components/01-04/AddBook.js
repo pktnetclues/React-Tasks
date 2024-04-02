@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AddBook = () => {
   const navigate = useNavigate();
@@ -57,14 +57,6 @@ const AddBook = () => {
 
   return (
     <div className="form">
-      <div className=" d-flex gap-2">
-        <Link to="/listdata">
-          <button className="btn btn-secondary">Books</button>
-        </Link>
-        <Link to="/">
-          <button className="btn btn-primary">Home</button>
-        </Link>
-      </div>
       <h3>Add Book</h3>
       <form onSubmit={handleFormSubmit}>
         <div className="mb-3">

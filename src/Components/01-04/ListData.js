@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Pagination } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import DeleteBook from "./DeleteBook";
+import UpdateBook from "./updateBook";
 
 const ListData = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,7 +16,7 @@ const ListData = () => {
     const xhr = new XMLHttpRequest();
     xhr.open(
       "GET",
-      `http://localhost:4000/api/getBooks?page=${page}&pageSize=1`,
+      `http://localhost:4000/api/getBooks?page=${page}&pageSize=5`,
       true
     );
     xhr.onload = function () {
@@ -70,15 +70,7 @@ const ListData = () => {
   }
 
   return (
-    <div className="listdata">
-      <div className=" d-flex gap-2">
-        <Link to="/add">
-          <button className="btn btn-primary">Go to Add Book</button>
-        </Link>
-        <Link to="/">
-          <button className="btn btn-primary">Go to Home</button>
-        </Link>
-      </div>
+    <div className="listdata mt-5">
       <h3>Books List</h3>
       <div className="main table-responsive">
         <table className="table table-striped">
@@ -86,8 +78,9 @@ const ListData = () => {
             <tr>
               <th>Title</th>
               <th>Description</th>
-              <th>Published Year</th>
+              <th>Launched</th>
               <th>Delete</th>
+              <th>Update</th>
             </tr>
           </thead>
           <tbody>
@@ -100,6 +93,16 @@ const ListData = () => {
                   <td>
                     <DeleteBook
                       id={book.book_id}
+                      getBooks={getBooks}
+                      currentPage={currentPage}
+                    />
+                  </td>
+                  <td>
+                    <UpdateBook
+                      id={book.book_id}
+                      p_title={book.title}
+                      p_description={book.description}
+                      p_published_year={book.published_year}
                       getBooks={getBooks}
                       currentPage={currentPage}
                     />
