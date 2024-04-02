@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-const AddData = () => {
+const AddBook = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     book_id: "",
@@ -29,6 +29,7 @@ const AddData = () => {
     xhr.send(JSON.stringify(formsendData));
     xhr.onload = function () {
       if (xhr.readyState === 4) {
+        console.log(xhr);
         if (xhr.status === 200) {
           var json_obj = JSON.parse(xhr.responseText);
           if (json_obj.message === "success") {
@@ -168,7 +169,7 @@ const AddData = () => {
             placeholder="Novel"
           />
         </div>
-        <div class="d-grid gap-2">
+        <div className="d-grid gap-2">
           <button className="btn btn-primary" type="submit">
             Add Data
           </button>
@@ -178,4 +179,4 @@ const AddData = () => {
   );
 };
 
-export default AddData;
+export default AddBook;

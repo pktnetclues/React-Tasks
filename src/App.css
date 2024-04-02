@@ -7,25 +7,11 @@
   background-color: rgb(218, 218, 211);
   filter: drop-shadow(2px 2px 10px rgb(243, 233, 233));
   padding: 20px;
-  gap: 10px;
+  /* gap: 10px; */
 }
 
-.form .form-data {
+.form input {
   width: 90%;
-  display: flex;
-  flex-direction: column;
-}
-
-/* .form-data input{
-   margin: 10px; 
-} */
-
-button {
-  margin: 5px;
-}
-
-.form-data button:hover {
-  background-color: rgb(39, 37, 37);
 }
 
 .listdata {
