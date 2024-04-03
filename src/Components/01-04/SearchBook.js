@@ -1,10 +1,19 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 
 const searchBook = () => {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [books, setBooks] = useState([]);
+
+  const authToken = localStorage.getItem("authToken");
+
+  useEffect(() => {
+    if (!authToken) {
+      navigate("/login");
+    }
+  }, [authToken, navigate]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -14,6 +23,7 @@ const searchBook = () => {
       `http://localhost:4000/api/searchBooks?search=${search}`,
       true
     );
+    xhr.withCredentials = true;
     xhr.onload = function () {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
@@ -35,7 +45,6 @@ const searchBook = () => {
     xhr.send();
   };
 
-  console.log(books);
   return (
     <div className="container-form">
       <Form onSubmit={handleSearch} className="d-flex search-form">

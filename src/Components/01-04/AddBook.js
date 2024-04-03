@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -12,6 +12,14 @@ const AddBook = () => {
     author_name: "",
     genre_name: "",
   });
+
+  const authToken = localStorage.getItem("authToken");
+
+  useEffect(() => {
+    if (!authToken) {
+      navigate("/login");
+    }
+  }, [authToken, navigate]);
 
   const formsendData = {
     book_id: formData.book_id,
@@ -27,6 +35,7 @@ const AddBook = () => {
     const xhr = new XMLHttpRequest();
     xhr.open("POST", `http://localhost:4000/api/addBook`, true);
     xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.withCredentials = true;
     xhr.send(JSON.stringify(formsendData));
     xhr.onload = function () {
       if (xhr.readyState === 4) {

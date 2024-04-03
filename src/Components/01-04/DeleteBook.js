@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { toast } from "sonner";
 
-const DeleteBook = ({ id, getBooks, currentPage }) => {
+const DeleteBook = ({ id, getBooks }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -11,6 +11,7 @@ const DeleteBook = ({ id, getBooks, currentPage }) => {
   const handleDelete = () => {
     const xhr = new XMLHttpRequest();
     xhr.open("DELETE", `http://localhost:4000/api/deleteBook/${id}`, true);
+    xhr.withCredentials = true;
     xhr.onload = function () {
       if (xhr.readyState === 4) {
         console.log(xhr);

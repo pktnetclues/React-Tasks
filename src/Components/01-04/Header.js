@@ -1,9 +1,45 @@
-import React from "react";
-import { Navbar, Container, Button } from "react-bootstrap";
+import React, { useContext, useEffect } from "react";
+import { Navbar, Container, Button, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { UserContext } from "./Context/UserContext";
+import { profilePicURL } from "./Constants";
+import { defaultProfilePic } from "./Constants";
 
 const Header = () => {
-  console.log(cookies);
+  const { user, setUser } = useContext(UserContext);
+
+  const handleLogout = () => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `http://localhost:4000/api/logout/admin`, true);
+    xhr.withCredentials = true;
+    xhr.onload = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          var json_obj = JSON.parse(xhr.responseText);
+          if (json_obj.message === "success") {
+            setUser(null);
+            localStorage.removeItem("authToken");
+            window.location.href = "/login";
+          } else {
+            console.error("Error message from server:", json_obj.message);
+          }
+        } else {
+          console.error("Error status from server:", xhr.statusText);
+        }
+      }
+    };
+    xhr.onerror = function () {
+      console.error("Network error occurred.");
+    };
+    xhr.send();
+  };
+
+  const authToken = localStorage.getItem("authToken");
+  const profilePicPath = user ? user.profilePic : null;
+  const profilePic = profilePicPath
+    ? `${profilePicURL}/${profilePicPath}`
+    : `${defaultProfilePic}`;
+
   return (
     <Navbar fixed="top" className="bg-body-tertiary">
       <Container>
@@ -13,31 +49,36 @@ const Header = () => {
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <div className="d-flex gap-4">
-            {cookies.length > 0 ? (
-              <>
+            {authToken ? (
+              <div className="d-flex justify-content-center align-items-center gap-4">
                 <Link to="/add">
-                  <button type="button" className="btn btn-primary">
-                    Add Book
-                  </button>
+                  <Button variant="primary">Add Book</Button>
                 </Link>
-                <Link to="/listdata">
-                  <button type="button" className="btn btn-secondary">
-                    Books
-                  </button>
+                <Link to="/listBooks">
+                  <Button variant="secondary">Books</Button>
                 </Link>
-
-                <button
-                  onClick={handleLogout}
-                  type="button"
-                  className="btn btn-secondary"
-                >
+                <Link to="/profile">
+                  <Image
+                    src={profilePic}
+                    alt="Profile"
+                    roundedCircle
+                    width="55"
+                    height="50"
+                  />
+                </Link>
+                <Button onClick={handleLogout} variant="secondary">
                   Logout
-                </button>
-              </>
+                </Button>
+              </div>
             ) : (
-              <Link to="/login">
-                <Button variant="secondary">Login</Button>
-              </Link>
+              <div className="d-flex justify-content-center align-items-center gap-4">
+                <Link to="/register">
+                  <Button variant="secondary">Register</Button>
+                </Link>
+                <Link to="/login">
+                  <Button variant="primary">Login</Button>
+                </Link>
+              </div>
             )}
           </div>
         </Navbar.Collapse>
