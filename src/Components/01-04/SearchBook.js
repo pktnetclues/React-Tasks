@@ -1,14 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Form, Button } from "react-bootstrap";
 
 const searchBook = () => {
   const [search, setSearch] = useState("");
   const [books, setBooks] = useState([]);
-
-  // useEffect(() => {
-  //   handleSearch();
-  // }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();

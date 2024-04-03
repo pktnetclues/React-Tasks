@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { toast } from "sonner";
 
 const DeleteBook = ({ id, getBooks, currentPage }) => {
   const [show, setShow] = useState(false);
@@ -16,17 +17,20 @@ const DeleteBook = ({ id, getBooks, currentPage }) => {
         if (xhr.status === 200) {
           var json_obj = JSON.parse(xhr.responseText);
           if (json_obj.message === "success") {
-            getBooks(currentPage);
+            getBooks(1);
             handleClose();
+            toast.success("Book Deleted");
           } else {
-            console.error(json_obj.message);
+            toast.error("Error Deleting Book");
           }
         } else {
+          toast.error("Error Deleting Book");
           console.error(xhr.statusText);
         }
       }
     };
     xhr.onerror = function () {
+      toast.error("Error Deleting Book");
       console.error(xhr.statusText);
     };
     xhr.send(); // Send the DELETE request

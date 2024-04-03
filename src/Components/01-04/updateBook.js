@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, Container, Modal } from "react-bootstrap";
+import { toast } from "sonner";
 
 export default function UpdateBook({
   id,
@@ -40,15 +41,22 @@ export default function UpdateBook({
           if (json_obj.message === "success") {
             getBooks(currentPage);
             handleClose();
+            toast.success("Book Edited");
           } else {
+            toast.error("There is something wrong");
             console.error(json_obj.message);
           }
+        } else if (xhr.status === 500) {
+          toast.error("Server Error");
+          console.error(json_obj.message);
         } else {
+          toast.error("There is something wrong");
           console.error(xhr.statusText);
         }
       }
     };
     xhr.onerror = function () {
+      toast.error("There is something wrong");
       console.error(xhr.statusText);
     };
   };

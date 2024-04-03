@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const AddBook = () => {
   const navigate = useNavigate();
@@ -41,16 +42,19 @@ const AddBook = () => {
               author_name: "",
               genre_name: "",
             });
+            toast.success("Book Added");
             navigate("/listdata");
           } else {
-            console.error(json_obj.message);
+            toast.error("There is something wrong");
           }
         } else {
+          toast.error("There is something wrong");
           console.error(xhr.statusText);
         }
       }
     };
     xhr.onerror = function () {
+      toast.error("There is something wrong");
       console.error(xhr.statusText);
     };
   };

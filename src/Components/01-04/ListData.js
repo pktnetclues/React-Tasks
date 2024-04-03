@@ -16,7 +16,7 @@ const ListData = () => {
     const xhr = new XMLHttpRequest();
     xhr.open(
       "GET",
-      `http://localhost:4000/api/getBooks?page=${page}&pageSize=5`,
+      `http://localhost:4000/api/getBooks?page=${page}&pageSize=3`,
       true
     );
     xhr.onload = function () {
@@ -72,60 +72,66 @@ const ListData = () => {
   return (
     <div className="listdata mt-5">
       <h3>Books List</h3>
-      <div className="main table-responsive">
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Launched</th>
-              <th>Delete</th>
-              <th>Update</th>
-            </tr>
-          </thead>
-          <tbody>
-            {books.map((book) => {
-              return (
-                <tr key={book.book_id}>
-                  <td>{book.title}</td>
-                  <td>{book.description}</td>
-                  <td>{book.published_year}</td>
-                  <td>
-                    <DeleteBook
-                      id={book.book_id}
-                      getBooks={getBooks}
-                      currentPage={currentPage}
-                    />
-                  </td>
-                  <td>
-                    <UpdateBook
-                      id={book.book_id}
-                      p_title={book.title}
-                      p_description={book.description}
-                      p_published_year={book.published_year}
-                      getBooks={getBooks}
-                      currentPage={currentPage}
-                    />
-                  </td>
+      {books.length > 0 ? (
+        <>
+          <div className="main table-responsive">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Launched</th>
+                  <th>Delete</th>
+                  <th>Update</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <div className="d-flex gap-4">
-        <Pagination size="lg">
-          <Pagination.Prev
-            onClick={handlePrevPage}
-            disabled={currentPage === 1}
-          />
-          {pages}
-          <Pagination.Next
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-          />
-        </Pagination>
-      </div>
+              </thead>
+              <tbody>
+                {books.map((book) => {
+                  return (
+                    <tr key={book.book_id}>
+                      <td>{book.title}</td>
+                      <td>{book.description}</td>
+                      <td>{book.published_year}</td>
+                      <td>
+                        <DeleteBook
+                          id={book.book_id}
+                          getBooks={getBooks}
+                          currentPage={currentPage}
+                        />
+                      </td>
+                      <td>
+                        <UpdateBook
+                          id={book.book_id}
+                          p_title={book.title}
+                          p_description={book.description}
+                          p_published_year={book.published_year}
+                          getBooks={getBooks}
+                          currentPage={currentPage}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div className="d-flex gap-4">
+            <Pagination size="lg">
+              <Pagination.Prev
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+              />
+              {pages}
+              <Pagination.Next
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              />
+            </Pagination>
+          </div>
+        </>
+      ) : (
+        <h2> No Books</h2>
+      )}
     </div>
   );
 };
