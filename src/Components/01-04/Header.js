@@ -1,12 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { Navbar, Container, Button, Image } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./Context/UserContext";
 import { profilePicURL } from "./Constants";
 import { defaultProfilePic } from "./Constants";
+import { toast } from "sonner";
 
 const Header = () => {
-  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
+  const { user, setUser, getProfile } = useContext(UserContext);
 
   const handleLogout = () => {
     const xhr = new XMLHttpRequest();
@@ -19,7 +21,9 @@ const Header = () => {
           if (json_obj.message === "success") {
             setUser(null);
             localStorage.removeItem("authToken");
-            window.location.href = "/login";
+            getProfile();
+            navigate("/login");
+            toast.success("Logout Success");
           } else {
             console.error("Error message from server:", json_obj.message);
           }

@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [cnfPassword, setCnfPassword] = useState("");
   const [name, setName] = useState("");
   const [profilePic, setProfilePic] = useState(null);
 
@@ -13,6 +16,13 @@ const Register = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
+
+    const emailRegExp =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/;
+
+    if (input && input.length && input.match(emailRegExp)) {
+      setEmail(input);
+    }
 
     const formData = new FormData();
     formData.append("email", email);
@@ -26,7 +36,6 @@ const Register = () => {
     xhr.send(formData);
     xhr.onload = function () {
       if (xhr.readyState === 4) {
-        console.log(xhr);
         if (xhr.status === 200) {
           var json_obj = JSON.parse(xhr.responseText);
           if (json_obj.message === "success") {
@@ -35,7 +44,7 @@ const Register = () => {
             setName("");
             setLoading(false);
             toast.success("Register Successful");
-            // navigate("/listdata");
+            navigate("/login");
           } else {
             toast.error("There is an error");
             console.error(json_obj.message);
@@ -59,9 +68,12 @@ const Register = () => {
   const MAX_FILE_SIZE_MB = 1;
   const handleProfilePicChange = (e) => {
     const file = e.target.files[0];
+    console.log(file);
     if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
       toast.error(`File size should be less than ${MAX_FILE_SIZE_MB}MB`);
       return;
+    } else if (!file.type == "image") {
+      toast.error(`File should be of Image type only`);
     } else {
       setProfilePic(file);
     }
@@ -70,7 +82,11 @@ const Register = () => {
   return (
     <div className="sign-in__wrapper">
       <div className="sign-in__backdrop"></div>
-      <Form className="shadow p-4 bg-white rounded" onSubmit={handleFormSubmit}>
+      <Form
+        name="form"
+        className="shadow p-4 bg-white rounded"
+        onSubmit={handleFormSubmit}
+      >
         <div className="h4 mb-2 text-center">Sign In</div>
         <Form.Group className="mb-2" controlId="name">
           <Form.Label>Name</Form.Label>
@@ -83,12 +99,13 @@ const Register = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-2" controlId="username">
+        <Form.Group className="mb-2" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control
-            type="text"
+            type="email"
+            name="email"
             value={email}
-            placeholder="Username"
+            placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -105,6 +122,17 @@ const Register = () => {
           />
         </Form.Group>
 
+        <Form.Group className="mb-2" controlId="cnfpassword">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control
+            type="password"
+            value={cnfPassword}
+            placeholder="Password"
+            onChange={(e) => setCnfPassword(e.target.value)}
+            required
+          />
+        </Form.Group>
+
         <Form.Group className="mb-2" controlId="profilePic">
           <Form.Label>Profile Picture</Form.Label>
           <Form.Control
@@ -115,15 +143,9 @@ const Register = () => {
           />
         </Form.Group>
 
-        {!loading ? (
-          <Button className="w-100" variant="primary" type="submit">
-            Register
-          </Button>
-        ) : (
-          <Button className="w-100" variant="primary" type="submit" disabled>
-            Registering...
-          </Button>
-        )}
+        <Button className="w-100" variant="primary" type="submit">
+          Register
+        </Button>
       </Form>
     </div>
   );

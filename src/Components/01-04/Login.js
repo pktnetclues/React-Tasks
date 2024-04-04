@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { UserContext } from "./Context/UserContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { getProfile } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -34,7 +36,8 @@ const Login = () => {
             setLoading(false);
             localStorage.setItem("authToken", json_obj.token);
             toast.success("Login Successfull");
-            window.location.href = "/listBooks";
+            getProfile();
+            navigate("/listBooks");
           } else {
             toast.error("There is an error");
             console.error(json_obj.message);
