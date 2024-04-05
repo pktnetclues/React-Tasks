@@ -53,13 +53,14 @@ const Login = () => {
       }
     };
     xhr.onerror = function () {
+      toast.error("Something Wrong in Backend");
+      setLoading(false);
       console.error(xhr.statusText);
     };
   };
 
   return (
     <div className="sign-in__wrapper">
-      <div className="sign-in__backdrop"></div>
       <Form className="shadow p-4 bg-white rounded" onSubmit={handleFormSubmit}>
         <div className="h4 mb-2 text-center">Sign In</div>
 

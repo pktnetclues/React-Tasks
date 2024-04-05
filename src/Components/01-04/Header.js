@@ -9,6 +9,7 @@ import { toast } from "sonner";
 const Header = () => {
   const navigate = useNavigate();
   const { user, setUser, getProfile } = useContext(UserContext);
+  useEffect(() => {});
 
   const handleLogout = () => {
     const xhr = new XMLHttpRequest();

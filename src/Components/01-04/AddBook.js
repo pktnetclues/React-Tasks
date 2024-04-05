@@ -5,7 +5,6 @@ import { toast } from "sonner";
 const AddBook = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    book_id: "",
     title: "",
     description: "",
     published_year: "",
@@ -22,7 +21,6 @@ const AddBook = () => {
   }, [authToken, navigate]);
 
   const formsendData = {
-    book_id: formData.book_id,
     title: formData.title,
     description: formData.description,
     published_year: formData.published_year,
@@ -69,26 +67,9 @@ const AddBook = () => {
   };
 
   return (
-    <div className="form">
+    <div className="sign-in__wrapper">
       <h3>Add Book</h3>
-      <form onSubmit={handleFormSubmit}>
-        <div className="mb-3">
-          <label htmlFor="exampleFormControlInput1" className="form-label">
-            Book id
-          </label>
-          <input
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                book_id: e.target.value,
-              })
-            }
-            type="number"
-            className="form-control"
-            name="id"
-            placeholder="12"
-          />
-        </div>
+      <form className="shadow p-4 bg-white rounded" onSubmit={handleFormSubmit}>
         <div className="mb-3">
           <label htmlFor="exampleFormControlInput1" className="form-label">
             Book Name

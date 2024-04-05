@@ -17,13 +17,6 @@ const Register = () => {
     e.preventDefault();
     setLoading(true);
 
-    const emailRegExp =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/;
-
-    if (input && input.length && input.match(emailRegExp)) {
-      setEmail(input);
-    }
-
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
@@ -81,7 +74,6 @@ const Register = () => {
 
   return (
     <div className="sign-in__wrapper">
-      <div className="sign-in__backdrop"></div>
       <Form
         name="form"
         className="shadow p-4 bg-white rounded"
